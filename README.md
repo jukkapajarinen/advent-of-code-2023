@@ -2,7 +2,7 @@
 
 My Advent of Code solutions for the [year 2023](https://adventofcode.com/2023) written in JavaScript.
 
-- [day-01/main.js](./day-01/main.js) 🚧🚧 (xxx)
+- [day-01/main.js](./day-01/main.js) 🌟🌟 (Day 1: Trebuchet?!)
 - [day-02/main.js](./day-02/main.js) 🚧🚧 (xxx)
 - [day-03/main.js](./day-03/main.js) 🚧🚧 (xxx)
 - [day-04/main.js](./day-04/main.js) 🚧🚧 (xxx)
@@ -29,7 +29,7 @@ My Advent of Code solutions for the [year 2023](https://adventofcode.com/2023) w
 
 ## How to run?
 
-Use `node` to run the solutions. (replace `day-dd` with e.g `day-04`)
+Use `node` (v20.10.0) to run the solutions. (replace `day-dd` with e.g `day-04`)
 
 ```
 node day-dd/main.js
