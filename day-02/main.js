@@ -6,8 +6,10 @@ const buffer = fs.readFileSync(`${path}/input.txt`);
 const rows = buffer.toString().trimEnd().split("\n");
 
 let possibleGameIdSum = 0;
+let sumOfPowerOfSets = 0;
 
 rows.forEach((row) => {
+  // parse id and game sets, game by game
   const gameId = Number(row.split(":")[0].replace(/[^0-9]/g, ""));
   const gameSets = row
     .split(":")[1]
@@ -33,16 +35,22 @@ rows.forEach((row) => {
       };
     });
 
+  // part 1
   const possible = gameSets.every(
     (set) => set.red <= 12 && set.blue <= 14 && set.green <= 13
   );
-
-  console.log(gameId, possible, gameSets);
-
   if (possible) {
     possibleGameIdSum += gameId;
   }
+
+  // part 2
+  const minReds = Math.max(...gameSets.map((set) => set.red));
+  const minBlues = Math.max(...gameSets.map((set) => set.blue));
+  const minGreens = Math.max(...gameSets.map((set) => set.green));
+  const powerOfSet = minReds * minBlues * minGreens;
+
+  sumOfPowerOfSets += powerOfSet;
 });
 
 console.log(`Puzzle 1: ${possibleGameIdSum}`);
-console.log(`Puzzle 2: ${2}`);
+console.log(`Puzzle 2: ${sumOfPowerOfSets}`);
