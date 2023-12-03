@@ -6,6 +6,7 @@ const buffer = fs.readFileSync(`${path}/input.txt`);
 const rows = buffer.toString().trimEnd().split("\n");
 
 let sumOfPartNumbers = 0;
+let sumOfGearRatios = 0;
 const possibleSets = [];
 rows.forEach((row, rowIdx) => {
   const numbers = row.match(/\d+/g);
@@ -107,21 +108,33 @@ rows.forEach((row, rowIdx) => {
   });
 });
 
-const filteredSets = possibleSets.filter(
+//Part 1
+const partNumberSets = possibleSets.filter(
   (s) => !s.surroundings.every((c) => c.char.match(/\d|\./g))
 );
-
-console.log(
-  util.inspect(filteredSets, {
-    depth: null,
-    colors: true,
-    maxArrayLength: Infinity,
-  })
-);
-
-sumOfPartNumbers = filteredSets
+sumOfPartNumbers = partNumberSets
   .map((x) => Number(x.number))
   .reduce((a, b) => a + b, 0);
 
+//part 2
+const onlyGearSets = partNumberSets.filter((s) =>
+  s.surroundings.some((c) => c.char === "*")
+);
+const onlyGearSetsFlat = onlyGearSets.map((x) => {
+  return {
+    number: x.number,
+    starRow: x.surroundings.filter((y) => y.char === "*")[0].row,
+    starCol: x.surroundings.filter((y) => y.char === "*")[0].col,
+  };
+});
+
+while (onlyGearSetsFlat.length > 0) {
+  const last = onlyGearSetsFlat.pop();
+  const match = onlyGearSetsFlat.filter(
+    (s) => s.starRow === last.starRow && s.starCol === last.starCol
+  )?.[0];
+  sumOfGearRatios += match ? Number(last.number) * Number(match.number) : 0;
+}
+
 console.log(`Puzzle 1: ${sumOfPartNumbers}`);
-console.log(`Puzzle 2: ${2}`);
+console.log(`Puzzle 2: ${sumOfGearRatios}`);
