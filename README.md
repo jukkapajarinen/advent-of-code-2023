@@ -5,7 +5,7 @@ My Advent of Code solutions for the [year 2023](https://adventofcode.com/2023) w
 - [day-01/main.js](./day-01/main.js) 🌟🌟 (Day 1: Trebuchet?!)
 - [day-02/main.js](./day-02/main.js) 🌟🌟 (Day 2: Cube Conundrum)
 - [day-03/main.js](./day-03/main.js) 🌟🌟 (Day 3: Gear Ratios)
-- [day-04/main.js](./day-04/main.js) 🚧🚧 (xxx)
+- [day-04/main.js](./day-04/main.js) 🌟🚧 (Day 4: Scratchcards)
 - [day-05/main.js](./day-05/main.js) 🚧🚧 (xxx)
 - [day-06/main.js](./day-06/main.js) 🚧🚧 (xxx)
 - [day-07/main.js](./day-07/main.js) 🚧🚧 (xxx)
