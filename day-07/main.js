@@ -6,7 +6,9 @@ const buffer = fs.readFileSync(`${path}/input.txt`);
 const rows = buffer.toString().trimEnd().split("\n");
 
 rows.forEach((row) => {
-  console.log(row);
+  const hand = row.split(" ")[0].split("");
+  const bid = Number(row.split(" ")[1]);
+  console.log(hand, bid);
 });
 
 console.log(`Puzzle 1: ${1}`);
