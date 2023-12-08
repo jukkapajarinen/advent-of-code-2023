@@ -11,23 +11,7 @@ const hands = rows.map((row) => {
   return { cards, bid };
 });
 
-const cardOrder = [
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "T",
-  "J",
-  "Q",
-  "K",
-  "A",
-];
-
-const handType = (hand) => {
+const handType = (hand, useJokers) => {
   const cardCounts = {
     A: hand.filter((c) => c === "A").length,
     K: hand.filter((c) => c === "K").length,
@@ -43,61 +27,89 @@ const handType = (hand) => {
     3: hand.filter((c) => c === "3").length,
     2: hand.filter((c) => c === "2").length,
   };
+  const { J, ...cardCountsNoJokers } = cardCounts;
 
-  if (Object.values(cardCounts).some((count) => count === 5)) {
-    return 7; // five of a kind
-  } else if (Object.values(cardCounts).some((count) => count === 4)) {
-    return 6; // four of a kind
-  } else if (
-    Object.values(cardCounts).some(
-      (count) =>
-        count === 3 && Object.values(cardCounts).some((count) => count === 2)
-    )
-  ) {
-    return 5; // full house
-  } else if (
-    Object.values(cardCounts).some(
-      (count) =>
-        count === 3 && !Object.values(cardCounts).some((count) => count === 2)
-    )
-  ) {
-    return 4; // three of a kind
-  } else if (
-    Object.values(cardCounts).filter((count) => count === 2).length === 2
-  ) {
-    return 3; // two pair
-  } else if (
-    Object.values(cardCounts).filter((count) => count === 2).length === 1
-  ) {
-    return 2; // one pair
+  fiveOfAKind = Object.values(cardCounts).some((count) => count === 5);
+  fourOfAKind = Object.values(cardCounts).some((count) => count === 4);
+  fourOfAKindWithJokers =
+    cardCounts["J"] === 3 ||
+    (cardCounts["J"] === 2 &&
+      Object.values(cardCountsNoJokers).some((count) => count === 2)) ||
+    (cardCounts["J"] === 1 &&
+      Object.values(cardCountsNoJokers).some((count) => count === 3));
+  fullHouse = Object.values(cardCounts).some(
+    (count) =>
+      count === 3 && Object.values(cardCounts).some((count) => count === 2)
+  );
+  fullHouseWithJokers =
+    cardCounts["J"] === 1 &&
+    Object.values(cardCountsNoJokers).filter((count) => count === 2).length ===
+      2;
+  threeOfAKind = Object.values(cardCounts).some(
+    (count) =>
+      count === 3 && !Object.values(cardCounts).some((count) => count === 2)
+  );
+  threeOfAKindWithJokers = cardCounts["J"] === 2;
+  twoPair =
+    Object.values(cardCounts).filter((count) => count === 2).length === 2;
+  twoPairWithJokers =
+    cardCounts["J"] === 1 &&
+    Object.values(cardCountsNoJokers).filter((count) => count === 2).length ===
+      1;
+  onePair =
+    Object.values(cardCounts).filter((count) => count === 2).length === 1;
+  onePairWithJokers = cardCounts["J"] === 1;
+
+  if (fiveOfAKind) {
+    return 7;
+  } else if (fourOfAKind || (useJokers && fourOfAKindWithJokers)) {
+    return 6;
+  } else if (fullHouse || (useJokers && fullHouse)) {
+    return 5;
+  } else if (threeOfAKind || (useJokers && threeOfAKindWithJokers)) {
+    return 4;
+  } else if (twoPair || (useJokers && twoPairWithJokers)) {
+    return 3;
+  } else if (onePair || (useJokers && onePairWithJokers)) {
+    return 2;
   } else {
-    return 1; // high card
+    return 1;
   }
 };
 
-const rankedHands = hands.sort((hand1, hand2) => {
-  const hand1Type = handType(hand1.cards);
-  const hand2Type = handType(hand2.cards);
+const rankHands = (hands, useJokers) =>
+  hands.sort((hand1, hand2) => {
+    const hand1Type = handType(hand1.cards, useJokers);
+    const hand2Type = handType(hand2.cards, useJokers);
 
-  if (hand1Type === hand2Type) {
-    for (let i = 0; i < hand1.cards.length; i++) {
-      const card1 = cardOrder.indexOf(hand1.cards[i]);
-      const card2 = cardOrder.indexOf(hand2.cards[i]);
-      if (card1 === card2) {
-        continue;
-      } else {
-        return card1 - card2;
+    if (hand1Type === hand2Type) {
+      const cardOrder = useJokers
+        ? ["J", "2", "3", "4", "5", "6", "7", "8", "9", "T", "Q", "K", "A"]
+        : ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"];
+      for (let i = 0; i < hand1.cards.length; i++) {
+        const card1 = cardOrder.indexOf(hand1.cards[i]);
+        const card2 = cardOrder.indexOf(hand2.cards[i]);
+        if (card1 === card2) {
+          continue;
+        } else {
+          return card1 - card2;
+        }
       }
+    } else {
+      return hand1Type - hand2Type;
     }
-  } else {
-    return hand1Type - hand2Type;
-  }
-});
+  });
 
-let totalWinnings = 0;
-rankedHands.forEach((hand, idx) => {
-  totalWinnings += hand.bid * (idx + 1);
+// part 1
+let totalWinnings1 = 0;
+rankHands(hands, false).forEach((hand, idx) => {
+  totalWinnings1 += hand.bid * (idx + 1);
 });
+console.log(`Puzzle 1: ${totalWinnings1}`);
 
-console.log(`Puzzle 1: ${totalWinnings}`);
-console.log(`Puzzle 2: ${2}`);
+// part 2
+let totalWinnings2 = 0;
+rankHands(hands, true).forEach((hand, idx) => {
+  totalWinnings2 += hand.bid * (idx + 1);
+});
+console.log(`Puzzle 2: ${totalWinnings2}`);
