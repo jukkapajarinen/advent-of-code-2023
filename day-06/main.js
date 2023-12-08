@@ -15,9 +15,22 @@ const distances = rows[1]
   .split(" ")
   .filter((x) => x !== "")
   .map((x) => Number(x));
+const waysToWin = Array(times.length).fill(0);
 
-console.log(times);
-console.log(distances);
+for (let i = 0; i < times.length; i++) {
+  const timeToUse = times[i];
+  const distToBeat = distances[i];
 
-console.log(`Puzzle 1: ${1}`);
+  for (let holdTime = 0; holdTime <= timeToUse; holdTime++) {
+    const speed = holdTime;
+    const timeLeft = timeToUse - holdTime;
+    const dist = timeLeft * speed;
+
+    if (dist > distToBeat) {
+      waysToWin[i]++;
+    }
+  }
+}
+
+console.log(`Puzzle 1: ${waysToWin.reduce((a, b) => a * b, 1)}`);
 console.log(`Puzzle 2: ${2}`);
