@@ -16,5 +16,18 @@ const nodes = rows.slice(2).map((row) => {
 console.log(lrs);
 console.log(nodes);
 
-console.log(`Puzzle 1: ${1}`);
+let steps = 0;
+let currentNode = nodes.filter((n) => n[0] === "AAA")[0];
+let currentInstructionIdx = 0;
+while (currentNode[0] !== "ZZZ") {
+  const code =
+    lrs[currentInstructionIdx] === "L" ? currentNode[1] : currentNode[2];
+  currentNode = nodes.filter((n) => n[0] === code)[0];
+
+  currentInstructionIdx =
+    currentInstructionIdx < lrs.length - 1 ? currentInstructionIdx + 1 : 0;
+  steps++;
+}
+
+console.log(`Puzzle 1: ${steps}`);
 console.log(`Puzzle 2: ${2}`);
