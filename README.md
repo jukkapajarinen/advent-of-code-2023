@@ -10,7 +10,7 @@ My Advent of Code solutions for the [year 2023](https://adventofcode.com/2023) w
 - [day-06/main.js](./day-06/main.js) 🌟🌟 (Day 6: Wait For It)
 - [day-07/main.js](./day-07/main.js) 🌟🚧 (Day 7: Camel Cards)
 - [day-08/main.js](./day-08/main.js) 🌟🚧 (Day 8: Haunted Wasteland)
-- [day-09/main.js](./day-09/main.js) 🚧🚧 (xxx)
+- [day-09/main.js](./day-09/main.js) 🌟🚧 (Day 9: Mirage Maintenance)
 - [day-10/main.js](./day-10/main.js) 🚧🚧 (xxx)
 - [day-11/main.js](./day-11/main.js) 🚧🚧 (xxx)
 - [day-12/main.js](./day-12/main.js) 🚧🚧 (xxx)
