@@ -21,6 +21,7 @@ histories.forEach((history) => {
   historiesWithSequences.push(sequences);
 });
 
+// Part 1
 const nextValues = [];
 historiesWithSequences.forEach((historyWithSequences) => {
   historyWithSequences[historyWithSequences.length - 1].push(0);
@@ -29,16 +30,27 @@ historiesWithSequences.forEach((historyWithSequences) => {
     const next = historyWithSequences[i - 1];
     let value = undefined;
     if (next) {
-      value = [...curr].pop() + [...next].pop();
+      value = [...next].pop() + [...curr].pop();
       next.push(value);
     }
   }
   nextValues.push([...historyWithSequences[0]].pop());
 });
+console.log(`Puzzle 1: ${nextValues.reduce((a, b) => a + b, 0)}`);
 
-console.log(nextValues);
-
-const sumOfValues = nextValues.reduce((a, b) => a + b, 0);
-
-console.log(`Puzzle 1: ${sumOfValues}`);
-console.log(`Puzzle 2: ${2}`);
+// Part 2
+const prevValues = [];
+historiesWithSequences.forEach((historyWithSequences) => {
+  historyWithSequences[historyWithSequences.length - 1].unshift(0);
+  for (let i = historyWithSequences.length - 1; i > -1; i--) {
+    const curr = historyWithSequences[i];
+    const next = historyWithSequences[i - 1];
+    let value = undefined;
+    if (next) {
+      value = [...next].shift() - [...curr].shift();
+      next.unshift(value);
+    }
+  }
+  prevValues.push([...historyWithSequences[0]].shift());
+});
+console.log(`Puzzle 2: ${prevValues.reduce((a, b) => a + b, 0)}`);
